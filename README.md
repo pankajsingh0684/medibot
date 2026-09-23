@@ -29,7 +29,54 @@ uv run python scripts/ingest_documents.py
 uv run uvicorn medibot.main:app --reload
 ```
 
-Set a real `JWT_SECRET_KEY` and `GROQ_API_KEY` in `.env` before using model-backed features. The default demo password is development-only and should be replaced.
+### Required environment values
+
+Before starting the app, create a real `.env` file from `.env.example` and set the required secrets and defaults.
+
+```env
+GROQ_API_KEY=your_groq_key_here
+GROQ_MODEL=openai/gpt-oss-20b
+QDRANT_PATH=qdrant_data
+QDRANT_COLLECTION=medibot_documents
+DATABASE_PATH=data/db/mediassist.db
+JWT_SECRET_KEY=replace-with-a-long-random-secret
+JWT_ALGORITHM=HS256
+JWT_EXPIRE_MINUTES=60
+EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+RERANKER_MODEL=cross-encoder/ms-marco-MiniLM-L-6-v2
+FRONTEND_ORIGIN=http://localhost:3000
+DEMO_PASSWORD=change-this-demo-password
+```
+
+Important:
+
+- `GROQ_API_KEY` is required for document-answer generation and must be set to a valid key from Groq.
+- `JWT_SECRET_KEY` must be a long random secret for signing JWTs.
+- `DEMO_PASSWORD` is the shared password for the development demo accounts below.
+- The demo password is for local development only and should be changed in production or replaced with real authentication.
+
+### Demo users
+
+The app includes a small built-in demo set that all use the same `DEMO_PASSWORD` value:
+
+| Username | Role |
+| --- | --- |
+| `dr.mehta` | doctor |
+| `nurse.priya` | nurse |
+| `billing.ravi` | billing_executive |
+| `tech.anand` | technician |
+| `admin.sys` | admin |
+
+Example login flow:
+
+```json
+{
+  "username": "dr.mehta",
+  "password": "your-demo-password"
+}
+```
+
+These users are intended for local testing and demonstration only.
 
 ## Frontend setup
 
